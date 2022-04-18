@@ -1,6 +1,5 @@
 import random
 
-
 def ordenamiento_de_burbuja(lista):
     n = len(lista)
 
