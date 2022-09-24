@@ -37,6 +37,9 @@
 # primera ópera.
 
 # Una función solo para devolver 2 strings: el de 30 caracteres y el restante.
+from ast import Num
+
+
 def add_spaces(corrupt_line, spaces_to_add):
     list_of_words = corrupt_line.split(" ")
     available_spaces = len(list_of_words) - 1
@@ -60,24 +63,34 @@ def add_spaces(corrupt_line, spaces_to_add):
     return new_string
 
 def split_string(string_to_justifiy, line_length, result_text=""):
-    if len(string_to_justifiy)>line_length:
+
+    if len(string_to_justifiy)>=line_length:
         if string_to_justifiy[0] == " ":
             string_to_analize = string_to_justifiy[1:line_length+1]
             string_left = string_to_justifiy[line_length+1:]
         else:
             string_to_analize = string_to_justifiy[0:line_length]
             string_left = string_to_justifiy[line_length:]
+
         string_to_reverse = string_to_analize
         reversed_string = string_to_reverse[::-1]
-        last_space = len(reversed_string) - reversed_string.index(" ") - 1
-        line = string_to_reverse[0:last_space]
-        spaces_to_add = line_length - len(line)
-        # import ipdb ; ipdb.set_trace()
-        improved_line = add_spaces(line, spaces_to_add)
+        try:
+            last_space = len(reversed_string) - reversed_string.index(" ") - 1
+        except ValueError:
+            last_space = 0 
+        if last_space>0:
+            line = string_to_reverse[0:last_space]
+            remanent = string_to_reverse[last_space:]
+            string_left = remanent + string_left
+            spaces_to_add = line_length - len(line)
+            if spaces_to_add:
+                improved_line = add_spaces(line, spaces_to_add)
+        else:
+            improved_line=string_to_reverse
         # Mejorar los espacios de la linea corrupta.
-        remanent = string_to_reverse[last_space:]
+        
         result_text += improved_line + "\n"
-        string_left = remanent + string_left
+        
         return split_string(
             string_to_justifiy=string_left,
             line_length=line_length, 
@@ -93,6 +106,11 @@ def split_string(string_to_justifiy, line_length, result_text=""):
 
 if __name__ == '__main__':
     string_to_justifiy = "La historia de la ópera tiene una duración relativamente corta dentro del contexto de la historia de la música en general apareció en 1597, fecha en que se creó la primera ópera." 
-    line_length = 30
+    list_string = string_to_justifiy.split(" ")
+    max_length = len(max(list_string, key=len))
+    line_length = int(input("Ingresa el ancho de línea que deseas: "))
+    if line_length < max_length:
+        f"Debe ser por lo menos de {max_length} el ancho de línea"
+        line_length = max_length
     result = split_string(string_to_justifiy, line_length)
     print(result)
