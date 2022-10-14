@@ -37,8 +37,6 @@
 # primera ópera.
 
 # Una función solo para devolver 2 strings: el de 30 caracteres y el restante.
-from ast import Num
-
 
 def add_spaces(corrupt_line, spaces_to_add):
     list_of_words = corrupt_line.split(" ")
