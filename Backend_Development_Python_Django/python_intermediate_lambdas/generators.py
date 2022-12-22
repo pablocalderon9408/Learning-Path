@@ -19,6 +19,7 @@ def fibo_gen():
 
 if __name__ == '__main__':
     fibonacci = fibo_gen()
+    import ipdb ; ipdb.set_trace()
     for element in fibonacci:
         print(element)
         time.sleep(.05)
